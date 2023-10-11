@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gobd-app-deployment  # Cambia el nombre aquí
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gobd  # Cambia el valor del label 'app' aquí
+  template:
+    metadata:
+      labels:
+        app: gobd  # Cambia el valor del label 'app' aquí
+    spec:
+      containers:
+      - name: gobd-app  # Cambia el nombre aquí
+        image: us-central1-docker.pkg.dev/annular-form-401215/hello-repo/hello-app:v1
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.2"
+            memory: "256Mi"
+
